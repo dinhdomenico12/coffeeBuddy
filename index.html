@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"> -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <link id="themeCSS" rel="stylesheet" href="themes/sketch.min.css">
+    </head>
+    <body>
+        <div class="container" id="appContainer"> </div>
+    </body>
+    <!-- 
+        JSVIEWS Template for the buttons, this will be linked to the object in coffee.js
+        coffee_object.DEFAULTS    -- this is an array of objects
+    -->
+    <!-- THE strenght -->
+    <script id="strength_selector" type="text/x-jsrender"> 
+        <header style="margin: 90px; font-size: 50px;"> HOW DO YOU WANT TO MAKE YOUR COFFEE </header>
+        <div class="row">
+            {^{for DEFAULTS.BREWS ~brew_types_id=brew_types_id}}
+                <div class="col-3">
+                    <button data-link="class{merge:id==~brew_types_id toggle='btn-primary'} class{merge:id!=~brew_types_id toggle='btn-secondary'} {on ~brew_selected #getIndex()}" class="btn w-100 btn-lg m-3">
+                       {{:name}}
+                    </button>
+                </div>
+            {{/for}}
+        </div>
+        <!-- <header style="margin: 90px; font-size: 50px;"> HOW STRONG IS YOUR COFFEE </header> -->
+         <!-- {^{:brew_name}}<br /><br /> -->
+         <br />
+        The most Common Brew ratio for {^{:brew_name}} is <button data-link="{on ~reset_strength}" type="button" class="btn btn-link" style="margin-bottom: 3.5px;"> 1:{^{:default_strength}}</button>
+        <br /><br /> 
+        <div class="row mt-2">
+            <div class="col-12 h3"> How do you like your coffee ?</div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-1">
+                <b>Weaker</b>
+            </div>
+            <div class="col-10"> <div class="form-group">
+                <input style="direction: rtl" type="range" class="slideMe form-range" data-link="{:strength:} {on 'input' ~calculate_beans_to_grind}" min="5" max="25">
+                </div>
+            </div>
+            <div class="col-1 text-right">
+                <b>Stronger</b>
+            </div>
+        </div>
+        <div class="alert alert-info col-2 p-2 "> 
+            Brew Ratio 1:{^{:strength}}
+        </div> 
+
+        FOR LOOP
+        <button class="alert alert-info p-2 " data-link="{on ~preset_cup_water_ml '1'}" >1 Cup</button>
+        <button class="alert alert-info p-2 " data-link="{on ~preset_cup_water_ml '2'}" >2 Cup</button>
+        <button class="alert alert-info p-2 " data-link="{on ~preset_cup_water_ml '3'}" >3 Cup</button>
+        <button class="alert alert-info p-2 " data-link="{on ~preset_cup_water_ml '4'}" >4 Cup</button>
+
+        
+        <div class="form-group mt-4">
+            <label for="formControlRange"> Water </label>
+            <input type="range" class="form-range" data-link="{:water_volume_in_ml:} {on 'input' ~calculate_beans_to_grind} max{:DEFAULTS.max_water_container_size}" step="25" min="0">
+        </div> 
+        <div class="form-group mt-2">
+            <label for="formControlRange"> Beans </label><br />
+            <input type="range" class="w-25 form-range" data-link="{:beans_to_grind:} {on 'input' ~calculate_water_volume_in_ml} max{:max_beans}" min="0">
+        </div>
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+            <h1 class="display-4" style="text-align:center; $red-400"> Brew {^{:beans_to_grind}} grams for {^{:~water_formatter(water_volume_in_ml)}} Water </h1>
+            </div>
+        </div> 
+
+        TABLE HERE
+        {^{for DEFAULTS.cup_presets}}
+            {^{:label}} : {^{:cups}}<br />
+        {{/for}}
+        
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script> 
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsviews/1.0.11/jsviews.min.js" integrity="sha512-nzeptB37xiXMYfCfY/IF7iDG13S82taErKCx2+bIWukARqZNu7Gea6W7/VYf5FerrcIpfB5RkrjR9hEyvLtO9A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="coffee.js"></script>
+</html>
